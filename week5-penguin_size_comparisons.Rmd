@@ -1,0 +1,49 @@
+---
+title: "Lab 5 - Penguin size comparisons"
+author: "Jacey Van Wert"
+date: "11/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(palmerpenguins)
+library(here)
+library(effsize)
+library(broom)
+library(car)
+library(ggbeeswarm)
+```
+
+# Part 1. T-tests
+
+Mass comparison: male & female chinstrap using penguins dataset (preinstalled with {palmerpenguins})
+
+```{r}
+chinstraps <- penguins %>% 
+  filter(species == "Chinstrap") 
+
+
+# Histograms
+ggplot(chinstraps, aes(x = body_mass_g))+
+  geom_histogram(bins = 10)+
+  facet_wrap(~sex)
+
+# QQ Plot
+ggplot(chinstraps, aes(sample = body_mass_g))+
+  geom_qq()+
+  facet_wrap(~sex)
+
+
+# Descriptive statistics
+chinstraps %>% 
+  group_by(sex) %>% 
+  summarise(
+    mean_mass = mean(body_mass_g),
+    median_mass = median(body_mass_g),
+    sd_mass = sd(body_mass_g),
+    sample_size = n()
+  )
+```
+
